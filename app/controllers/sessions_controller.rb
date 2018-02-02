@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
   def login_local
 	session[:user_id] = params["user_id"]
 	@user = User.find(params["user_id"])
-	redirect_back_or @user
+	redirect_to @user
   end
 
   def new
@@ -24,6 +24,6 @@ class SessionsController < ApplicationController
       session.delete(:user_id)
       flash[:success] = 'See you!'
     end
-    redirect_back_or root_path
+    redirect_to root_path
   end
 end
