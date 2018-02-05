@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
   def login_local
 	session[:user_id] = params["user_id"]
 	@user = User.find(params["user_id"])
-	redirect_to @user
+	redirect_to root_path
   end
 
   def new

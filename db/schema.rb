@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20180202075414) do
   create_table "courses", force: :cascade do |t|
     t.string   "name"
     t.string   "admin_uid"
+    t.datetime "start"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
