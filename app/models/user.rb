@@ -1,5 +1,10 @@
 class User < ApplicationRecord
+    self.primary_key = 'uid'
     devise :omniauthable, omniauth_providers: [:saml]
+    has_many :expectations
+    has_many :courses, through: :expectations
+    alias_attribute :id, :uid
+
 
     class << self
         def from_saml(auth_hash)
@@ -7,8 +12,9 @@ class User < ApplicationRecord
             uid = parse('urn:oid:0.9.2342.19200300.100.1.1')
             first_name = parse('urn:oid:2.5.4.42')
             last_name = parse('urn:oid:2.5.4.4')
+            ip = request.remote_ip
             name = "#{user.first_name} #{user.last_name}"
-            user.create(uid: uid, name: name)
+            user.create(uid: uid, name: name, ip: ip)
             user
         end
 

@@ -1,0 +1,12 @@
+<div class="jumbotron">
+  <h2> <%= "Welcome#{current_user ? ", #{current_user.name}" : ''}!" %> </h2>
+  <h2><% if !current_user %>Authenticate via <strong><%= link_to 'Shib', '/auth/saml' %></strong> to get started!
+  <% else %> Click on one of your courses to get started!</h2>
+  <hr>
+  <h4><strong>
+      <% @courses.each do |c| %>
+      <li><%= link_to c.name, c %></li>
+      <%end%>
+  </strong></h4>
+  <%end%>
+</div>

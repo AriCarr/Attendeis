@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
+  resources :courses
   resources :users
 
-  root to: 'sessions#new'
+  root to: 'pages#index'
 
   devise_for :users, :controllers => { :omniauth_callbacks => "authentications"}
   devise_scope :users do
