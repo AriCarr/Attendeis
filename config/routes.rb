@@ -9,6 +9,9 @@ Rails.application.routes.draw do
 
   get '/attendance', to: 'courses#attendance'
 
+  post '/enroll', to: 'courses#enroll', as: 'enroll'
+  post '/unenroll', to: 'courses#unenroll', as: 'unenroll'
+
   devise_scope :user do
     get 'sign_in', :to => 'devise/sessions#new', :as => :new_user_session
     get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session

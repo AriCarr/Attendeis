@@ -15,6 +15,24 @@ class CoursesController < ApplicationController
     end
   end
 
+  def enroll
+    @course = Course.find(params[:course])
+    @course.users.append(User.find_or_create_by(uid: params[:student]))
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def unenroll
+    @course = Course.find(params[:course])
+    @course.users.delete(User.find(params[:student]))
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def start
     @course.start = Time.now
     @course.save

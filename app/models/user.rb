@@ -9,7 +9,7 @@ class User < ApplicationRecord
     class << self
         def from_saml(auth_hash)
             @data = auth_hash['extra']['raw_info'].attributes
-            uid = parse('urn:oid:0.9.2342.19200300.100.1.1')
+            uid = parse('urn:oid:0.9.2342.19200300.100.1.1').downcase
             first_name = parse('urn:oid:2.5.4.42')
             last_name = parse('urn:oid:2.5.4.4')
             ip = request.remote_ip

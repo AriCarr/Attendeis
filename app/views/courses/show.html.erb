@@ -5,6 +5,10 @@
     <div id = 'button'>
     <%= render partial: 'start_button', locals: {course: @course} %>
     </div>
+    <h3> Expected students: </h3>
+    <div id = 'students'>
+    <%= render partial: 'students', locals: {course: @course} %>
+    </div>
 </div>
 
 <p>
