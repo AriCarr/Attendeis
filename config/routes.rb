@@ -5,6 +5,10 @@ Rails.application.routes.draw do
   resources :users
   devise_for :users, :controllers => { :omniauth_callbacks => "authentications"}
 
+  post '/change_state', to: 'courses#change_state', as: 'change_state'
+
+  get '/attendance', to: 'courses#attendance'
+
   devise_scope :user do
     get 'sign_in', :to => 'devise/sessions#new', :as => :new_user_session
     get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session

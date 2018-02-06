@@ -20,5 +20,7 @@ module Attendeis
         end unless hash.nil?
       end
     end
+
+    config.time_zone = 'Eastern Time (US & Canada)'
   end
 end

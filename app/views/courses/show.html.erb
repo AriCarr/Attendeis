@@ -1,5 +1,12 @@
 <p id="notice"><%= notice %></p>
 
+<div class="jumbotron">
+    <h2><%= @course.name %></h2>
+    <div id = 'button'>
+    <%= render partial: 'start_button', locals: {course: @course} %>
+    </div>
+</div>
+
 <p>
   <strong>Name:</strong>
   <%= @course.name %>

@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20180202075414) do
   create_table "courses", force: :cascade do |t|
     t.string   "name"
     t.string   "admin_uid"
+    t.string   "password"
     t.datetime "start"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -26,6 +27,7 @@ ActiveRecord::Schema.define(version: 20180202075414) do
   create_table "expectations", force: :cascade do |t|
     t.string   "user_id"
     t.integer  "course_id"
+    t.boolean  "checked_in"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["course_id"], name: "index_expectations_on_course_id", using: :btree
@@ -35,7 +37,6 @@ ActiveRecord::Schema.define(version: 20180202075414) do
   create_table "users", id: false, force: :cascade do |t|
     t.string   "uid",        null: false
     t.string   "name"
-    t.string   "ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["uid"], name: "index_users_on_uid", unique: true, using: :btree

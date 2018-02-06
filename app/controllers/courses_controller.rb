@@ -1,6 +1,32 @@
 class CoursesController < ApplicationController
   before_action :set_course, only: [:show, :edit, :update, :destroy]
 
+  def change_state
+    @course = Course.find(params[:current_course])
+
+    if @course.started
+      redirect_to attendance_path(course: @course.id)
+    else
+      start
+    end
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def start
+    @course.start = Time.now
+    @course.save
+
+  end
+
+  def attendance
+    @course = Course.find(params[:course])
+    @course.start = nil
+    @course.save
+  end
+
   # GET /courses
   # GET /courses.json
   def index
