@@ -15,9 +15,9 @@ class User < ApplicationRecord
             puts "First name = #{first_name}"
             last_name = parse('urn:oid:2.5.4.4')
             puts "Last name = #{last_name}"
-            name = "#{user.first_name} #{user.last_name}"
+            name = "#{first_name} #{last_name}"
             puts "Name = #{name}"
-            user.find_or_create_by(uid: uid)
+            user = find_or_create_by(uid: uid)
             puts "Found or created user #{uid}"
             user.name = name
             puts "Set user name"
