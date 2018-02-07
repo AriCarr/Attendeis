@@ -13,11 +13,9 @@ class User < ApplicationRecord
             puts "UID = #{uid}"
             first_name = parse('urn:oid:2.5.4.42')
             last_name = parse('urn:oid:2.5.4.4')
-            ip = request.remote_ip
             name = "#{user.first_name} #{user.last_name}"
             user.find_or_create_by(uid: uid)
             user.name = name
-            user.ip = ip
             user.save
             user
         end
