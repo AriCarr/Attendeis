@@ -19,9 +19,9 @@ ActiveRecord::Schema.define(version: 20180202075414) do
     t.string   "name"
     t.string   "admin_uid"
     t.string   "password"
-    t.datetime "start"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "dictionary", default: [],              array: true
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "expectations", force: :cascade do |t|

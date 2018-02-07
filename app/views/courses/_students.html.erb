@@ -9,7 +9,7 @@
 <% end %>
 </table>
 <%= form_tag(enroll_path, :method => "post", id: "search-form", remote: true) do %>
-<h4><%= text_field_tag :student, params[:student], placeholder: "Student username" %>
+<h4><%= text_field_tag :student, params[:student], placeholder: "Student username", autofocus: true %>
 &nbsp;
 <%= hidden_field_tag :course, course.id %>
 <%= submit_tag "Enroll", class: 'btn btn-default'%></h4>

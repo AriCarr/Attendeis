@@ -17,7 +17,8 @@ class CoursesController < ApplicationController
 
   def enroll
     @course = Course.find(params[:course])
-    @course.users.append(User.find_or_create_by(uid: params[:student]))
+    uid = params[:student]
+    @course.users.append(User.find_or_create_by(uid: uid)) unless uid == @course.admin_uid
 
     respond_to do |format|
       format.js
@@ -33,15 +34,37 @@ class CoursesController < ApplicationController
     end
   end
 
+  def dict_add
+    @course = Course.find(params[:course])
+    word = params[:word]
+    @course.dictionary << word unless @course.dictionary.include? word
+    @course.save
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def dict_remove
+    @course = Course.find(params[:course])
+    @course.dictionary.delete(params[:word])
+    @course.save
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def start
-    @course.start = Time.now
+    pass_arr = @course.dictionary.sample(3)
+    @course.password = "#{pass_arr[0]} #{pass_arr[1]} #{pass_arr[2]}"
     @course.save
 
   end
 
   def attendance
     @course = Course.find(params[:course])
-    @course.start = nil
+    @course.password = nil
     @course.save
   end
 

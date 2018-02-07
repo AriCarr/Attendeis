@@ -13,7 +13,7 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :name
       t.string :admin_uid
       t.string :password
-      t.datetime :start
+      t.string :dictionary, array: true, default: []
 
       t.timestamps
     end

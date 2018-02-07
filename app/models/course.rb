@@ -3,7 +3,7 @@ class Course < ApplicationRecord
   has_many :users, through: :expectations
 
   def started
-    !start.nil?
+    !password.nil?
   end
 
 end

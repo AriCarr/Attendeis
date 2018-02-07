@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   post '/enroll', to: 'courses#enroll', as: 'enroll'
   post '/unenroll', to: 'courses#unenroll', as: 'unenroll'
 
+  post '/dict_add', to: 'courses#dict_add', as: 'dict_add'
+  post '/dict_remove', to: 'courses#dict_remove', as: 'dict_remove'
+
   devise_scope :user do
     get 'sign_in', :to => 'devise/sessions#new', :as => :new_user_session
     get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
