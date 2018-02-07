@@ -8,6 +8,7 @@ class User < ApplicationRecord
 
     class << self
         def from_saml(auth_hash)
+            puts auth_hash
             @data = auth_hash['extra']['raw_info'].attributes
             puts @data
             uid = parse('urn:oid:0.9.2342.19200300.100.1.1').downcase
