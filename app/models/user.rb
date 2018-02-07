@@ -12,7 +12,9 @@ class User < ApplicationRecord
             uid = parse('urn:oid:0.9.2342.19200300.100.1.1').downcase
             puts "UID = #{uid}"
             first_name = parse('urn:oid:2.5.4.42')
+            puts "First name = #{first_name}"
             last_name = parse('urn:oid:2.5.4.4')
+            puts "Last name = #{last_name}"
             name = "#{user.first_name} #{user.last_name}"
             puts "Name = #{name}"
             user.find_or_create_by(uid: uid)
