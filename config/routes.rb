@@ -7,7 +7,8 @@ Rails.application.routes.draw do
 
   post '/change_state', to: 'courses#change_state', as: 'change_state'
 
-  get '/attendance', to: 'courses#attendance'
+  post '/courses/:id/attendance', to: 'courses#attendance', as: 'attendance'
+  post '/courses/:id/attendance_report', to: 'courses#stop', as: 'stop'
 
   post '/enroll', to: 'courses#enroll', as: 'enroll'
   post '/unenroll', to: 'courses#unenroll', as: 'unenroll'

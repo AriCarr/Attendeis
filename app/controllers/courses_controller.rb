@@ -1,23 +1,9 @@
 class CoursesController < ApplicationController
   before_action :set_course, only: [:show, :edit, :update, :destroy]
 
-  def change_state
-    @course = Course.find(params[:current_course])
-
-    if @course.started
-      redirect_to attendance_path(course: @course.id)
-    else
-      start
-    end
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
   def enroll
     @course = Course.find(params[:course])
-    uid = params[:student]
+    uid = params[:student].downcase
     @course.users.append(User.find_or_create_by(uid: uid)) unless uid == @course.admin_uid
 
     respond_to do |format|
@@ -36,7 +22,7 @@ class CoursesController < ApplicationController
 
   def dict_add
     @course = Course.find(params[:course])
-    word = params[:word]
+    word = params[:word].downcase
     @course.dictionary << word unless @course.dictionary.include? word
     @course.save
 
@@ -55,14 +41,22 @@ class CoursesController < ApplicationController
     end
   end
 
-  def start
-    pass_arr = @course.dictionary.sample(3)
-    @course.password = "#{pass_arr[0]} #{pass_arr[1]} #{pass_arr[2]}"
-    @course.save
+  def attendance
+    @course = Course.find(params[:id])
+    if @course.password.nil?
+        @course.expectations.each { |e| e.checked_in = false; e.save }
+        pass_arr = @course.dictionary.sample(3)
+        @course.password = "#{pass_arr[0]} #{pass_arr[1]} #{pass_arr[2]}"
+        @course.save
+    end
+
+    respond_to do |format|
+        format.html
+    end
 
   end
 
-  def attendance
+  def attendance_report
     @course = Course.find(params[:course])
     @course.password = nil
     @course.save
