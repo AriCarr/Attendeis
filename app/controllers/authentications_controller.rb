@@ -5,9 +5,10 @@ class AuthenticationsController < Devise::OmniauthCallbacksController
   def saml
     hash = request.env['omniauth.auth']
     @user = User.from_saml(hash)
+    puts @user
     session[:user_id] = @user.id
     flash[:success] = "Welcome, #{@user.name}!"
-    redirect_to @user
+    redirect_to root_path
   rescue
     flash[:warning] = 'There was an error while trying to authenticate you...'
     redirect_to root_path
