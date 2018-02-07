@@ -9,20 +9,14 @@ class User < ApplicationRecord
     class << self
         def from_saml(auth_hash)
             @data = auth_hash['extra']['raw_info'].attributes
+            puts @data
             uid = parse('urn:oid:0.9.2342.19200300.100.1.1').downcase
-            puts "UID = #{uid}"
             first_name = parse('urn:oid:2.5.4.42')
-            puts "First name = #{first_name}"
             last_name = parse('urn:oid:2.5.4.4')
-            puts "Last name = #{last_name}"
             name = "#{first_name} #{last_name}"
-            puts "Name = #{name}"
             user = find_or_create_by(uid: uid)
-            puts "Found or created user #{uid}"
             user.name = name
-            puts "Set user name"
             user.save
-            puts "Saved user"
             user
         end
 
