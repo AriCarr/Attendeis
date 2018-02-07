@@ -8,10 +8,13 @@ Rails.application.routes.draw do
   post '/change_state', to: 'courses#change_state', as: 'change_state'
 
   post '/courses/:id/attendance', to: 'courses#attendance', as: 'attendance'
-  post '/courses/:id/attendance_report', to: 'courses#stop', as: 'stop'
+  post '/courses/:id/attendance_report', to: 'courses#stop', as: 'attendance_report'
 
   post '/enroll', to: 'courses#enroll', as: 'enroll'
   post '/unenroll', to: 'courses#unenroll', as: 'unenroll'
+
+  post '/admin_add', to: 'courses#admin_add', as: 'admin_add'
+  post '/admin_remove', to: 'courses#admin_remove', as: 'admin_remove'
 
   post '/dict_add', to: 'courses#dict_add', as: 'dict_add'
   post '/dict_remove', to: 'courses#dict_remove', as: 'dict_remove'

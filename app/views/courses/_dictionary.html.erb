@@ -4,14 +4,14 @@
 <tr>
   <td><h4><%= s %></h4></td>
   <td>&emsp;</td>
-  <td><h4><%= button_to 'Remove', dict_remove_path(course: course.id, word: s), data: { confirm: 'Are you sure?' }, remote: true, class: 'btn btn-default' %></h4></td>
+  <td><h4><%= button_to 'Remove', dict_remove_path(id: course.id, word: s), data: { confirm: 'Are you sure?' }, remote: true, class: 'btn btn-default' %></h4></td>
 </tr>
 <% end %>
 </table>
 <%= form_tag(dict_add_path, :method => "post", id: "search-form", remote: true) do %>
 <h4><%= text_field_tag :word, params[:word], placeholder: "Add a word", autofocus: true %>
 &nbsp;
-<%= hidden_field_tag :course, course.id %>
+<%= hidden_field_tag :id, course.id %>
 <%= submit_tag "Add", class: 'btn btn-default'%></h4>
 <% end %>
 </h4>

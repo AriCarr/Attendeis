@@ -3,14 +3,22 @@
 <div class="jumbotron">
     <h2><%= @course.name %></h2>
     <%= button_to 'Click here to start taking attendance!', attendance_path, class: 'btn btn-primary'%>
+    <hr>
     <%= button_to 'Click here to view the last attendance report', attendance_report_path, class: 'btn btn-default'%>
+    <hr>
     <h3> Expected students: </h3>
     <div id = 'students'>
     <%= render partial: 'students', locals: {course: @course} %>
     </div>
+    <hr>
     <h3> Password dictionary: </h3>
     <div id = 'dictionary'>
     <%= render partial: 'dictionary', locals: {course: @course} %>
+    </div>
+    <hr>
+    <h3> Course admins: </h3>
+    <div id = 'admins'>
+    <%= render partial: 'admins', locals: {course: @course} %>
     </div>
 
 </div>
@@ -21,8 +29,8 @@
 </p>
 
 <p>
-  <strong>Admin uid:</strong>
-  <%= @course.admin_uid %>
+  <strong>Admin uids:</strong>
+  <%= @course.admin_uids %>
 </p>
 
 <%= link_to 'Edit', edit_course_path(@course) %> |

@@ -4,14 +4,14 @@
 <tr>
   <td><h4><%= user.uid %></h4></td>
   <td>&emsp;</td>
-  <td><h4><%= button_to 'Unenroll', unenroll_path(course: course.id, student: user.uid), data: { confirm: 'Are you sure?' }, remote: true, class: 'btn btn-default' %></h4></td>
+  <td><h4><%= button_to 'Unenroll', unenroll_path(id: course.id, student: user.uid), data: { confirm: 'Are you sure?' }, remote: true, class: 'btn btn-default' %></h4></td>
 </tr>
 <% end %>
 </table>
 <%= form_tag(enroll_path, :method => "post", id: "search-form", remote: true) do %>
 <h4><%= text_field_tag :student, params[:student], placeholder: "Student username", autofocus: true %>
 &nbsp;
-<%= hidden_field_tag :course, course.id %>
+<%= hidden_field_tag :id, course.id %>
 <%= submit_tag "Enroll", class: 'btn btn-default'%></h4>
 <% end %>
 </h4>

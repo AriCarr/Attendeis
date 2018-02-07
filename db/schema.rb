@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20180202075414) do
 
   create_table "courses", force: :cascade do |t|
     t.string   "name"
-    t.string   "admin_uid"
+    t.string   "admin_uids", default: [],              array: true
     t.string   "password"
     t.string   "dictionary", default: [],              array: true
     t.datetime "created_at",              null: false

@@ -11,7 +11,7 @@ class CreateUsers < ActiveRecord::Migration[5.0]
 
     create_table :courses do |t|
       t.string :name
-      t.string :admin_uid
+      t.string :admin_uids, array: true, default: []
       t.string :password
       t.string :dictionary, array: true, default: []
 

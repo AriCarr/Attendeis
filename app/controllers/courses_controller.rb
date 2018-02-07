@@ -1,10 +1,16 @@
 class CoursesController < ApplicationController
   before_action :set_course, only: [:show, :edit, :update, :destroy]
+  before_action :require_admin
+
+  def require_admin
+    set_course
+    redirect_to root_path unless @course.admin_uids.include? current_user.uid
+  end
 
   def enroll
-    @course = Course.find(params[:course])
+    set_course
     uid = params[:student].downcase
-    @course.users.append(User.find_or_create_by(uid: uid)) unless uid == @course.admin_uid
+    @course.users.append(User.find_or_create_by(uid: uid)) unless @course.admin_uids.include? uid
 
     respond_to do |format|
       format.js
@@ -12,7 +18,7 @@ class CoursesController < ApplicationController
   end
 
   def unenroll
-    @course = Course.find(params[:course])
+    set_course
     @course.users.delete(User.find(params[:student]))
 
     respond_to do |format|
@@ -20,8 +26,29 @@ class CoursesController < ApplicationController
     end
   end
 
+  def admin_add
+    set_course
+    word = params[:uid].downcase
+    @course.admin_uids << word unless @course.admin_uids.include? word
+    @course.save
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def admin_remove
+    set_course
+    @course.admin_uids.delete(params[:uid])
+    @course.save
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def dict_add
-    @course = Course.find(params[:course])
+    set_course
     word = params[:word].downcase
     @course.dictionary << word unless @course.dictionary.include? word
     @course.save
@@ -32,7 +59,7 @@ class CoursesController < ApplicationController
   end
 
   def dict_remove
-    @course = Course.find(params[:course])
+    set_course
     @course.dictionary.delete(params[:word])
     @course.save
 
@@ -42,7 +69,7 @@ class CoursesController < ApplicationController
   end
 
   def attendance
-    @course = Course.find(params[:id])
+    set_course
     if @course.password.nil?
         @course.expectations.each { |e| e.checked_in = false; e.save }
         pass_arr = @course.dictionary.sample(3)
@@ -57,7 +84,7 @@ class CoursesController < ApplicationController
   end
 
   def attendance_report
-    @course = Course.find(params[:course])
+    set_course
     @course.password = nil
     @course.save
   end

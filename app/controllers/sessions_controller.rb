@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  skip_before_action :require_login
 
   def login_local
 	session[:user_id] = params["user_id"]
@@ -14,7 +15,7 @@ class SessionsController < ApplicationController
     begin
       redirect_to root_path
     rescue
-      flash[:warning] = 'There was an error while trying to authenticate you...2'
+      flash[:warning] = 'There was an error while trying to authenticate you...'
       redirect_to root_path
     end
   end
