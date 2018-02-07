@@ -14,7 +14,7 @@ class User < ApplicationRecord
             last_name = parse('urn:oid:2.5.4.4')
             ip = request.remote_ip
             name = "#{user.first_name} #{user.last_name}"
-            user.find_by(uid: uid)
+            user.find_or_create_by(uid: uid)
             user.name = name
             user.ip = ip
             user.save
