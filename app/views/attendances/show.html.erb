@@ -1,0 +1,13 @@
+<div class="jumbotron">
+    <h2> Attendance is being taken! </h2>
+    <ol>
+        <h3><li>Go to <%= request.domain %></li></h3>
+        <h3><li>Sign in with your Brandeis credentials</li><h3>
+        <h3><li> Enter the password: <b><%= @attendance.password %></b></li></h3>
+    </ol>
+
+    <h3> <%= @attendance.users.count %>/<%= @attendance.course.users.count %>
+    students checked in </h3>
+
+    <%= button_to 'Click here to stop taking attendance', root_path, class: 'btn btn-primary'%>
+</div>

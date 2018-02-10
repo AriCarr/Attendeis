@@ -1,14 +1,14 @@
 Rails.application.routes.draw do
+  resources :attendances
   get '/users/auth/:provider/callback', to: 'sessions#create'
+
+  post '/create_attendance', to: 'attendances#create'
 
   resources :courses
   resources :users
   devise_for :users, :controllers => { :omniauth_callbacks => "authentications"}
 
   post '/change_state', to: 'courses#change_state', as: 'change_state'
-
-  post '/courses/:id/attendance', to: 'courses#attendance', as: 'attendance'
-  post '/courses/:id/attendance_report', to: 'courses#stop', as: 'attendance_report'
 
   post '/enroll', to: 'courses#enroll', as: 'enroll'
   post '/unenroll', to: 'courses#unenroll', as: 'unenroll'

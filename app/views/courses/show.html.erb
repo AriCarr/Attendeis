@@ -2,9 +2,9 @@
 
 <div class="jumbotron">
     <h2><%= @course.name %></h2>
-    <%= button_to 'Click here to start taking attendance!', attendance_path, class: 'btn btn-primary'%>
+    <%= button_to 'Click here to start taking attendance!', create_attendance_path(course_id: @course.id), class: 'btn btn-primary'%>
     <hr>
-    <%= button_to 'Click here to view the last attendance report', attendance_report_path, class: 'btn btn-default'%>
+    <%= button_to 'Click here to view the last attendance report', @last_attendance, class: 'btn btn-default' unless @last_attendance.nil?%>
     <hr>
     <h3> Expected students: </h3>
     <div id = 'students'>

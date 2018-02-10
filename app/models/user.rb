@@ -3,14 +3,14 @@ class User < ApplicationRecord
     devise :omniauthable, omniauth_providers: [:saml]
     has_many :expectations
     has_many :courses, through: :expectations
+    has_many :checkins
+    has_many :attendances, through: :checkins
     alias_attribute :id, :uid
 
 
     class << self
         def from_saml(auth_hash)
-            puts auth_hash
             @data = auth_hash['extra']['raw_info'].attributes
-            puts @data
             uid = parse('urn:oid:0.9.2342.19200300.100.1.1').downcase
             first_name = parse('urn:oid:2.5.4.42')
             last_name = parse('urn:oid:2.5.4.4')

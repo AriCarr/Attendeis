@@ -5,7 +5,6 @@ class AuthenticationsController < Devise::OmniauthCallbacksController
   def saml
     hash = request.env['omniauth.auth']
     @user = User.from_saml(hash)
-    puts @user
     session[:user_id] = @user.id
     flash[:success] = "Welcome, #{@user.name}!"
     redirect_to root_path

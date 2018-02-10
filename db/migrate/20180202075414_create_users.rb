@@ -12,16 +12,7 @@ class CreateUsers < ActiveRecord::Migration[5.0]
     create_table :courses do |t|
       t.string :name
       t.string :admin_uids, array: true, default: []
-      t.string :password
       t.string :dictionary, array: true, default: []
-
-      t.timestamps
-    end
-
-    create_table :expectations do |t|
-      t.string :user_id, index: true
-      t.integer :course_id, index: true
-      t.boolean :checked_in
 
       t.timestamps
     end

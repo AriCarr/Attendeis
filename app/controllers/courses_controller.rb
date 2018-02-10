@@ -10,7 +10,7 @@ class CoursesController < ApplicationController
   def enroll
     set_course
     uid = params[:student].downcase
-    @course.users.append(User.find_or_create_by(uid: uid)) unless @course.admin_uids.include? uid
+    @course.users << User.find_or_create_by(uid: uid) unless @course.admin_uids.include? uid
 
     respond_to do |format|
       format.js
@@ -68,27 +68,6 @@ class CoursesController < ApplicationController
     end
   end
 
-  def attendance
-    set_course
-    if @course.password.nil?
-        @course.expectations.each { |e| e.checked_in = false; e.save }
-        pass_arr = @course.dictionary.sample(3)
-        @course.password = "#{pass_arr[0]} #{pass_arr[1]} #{pass_arr[2]}"
-        @course.save
-    end
-
-    respond_to do |format|
-        format.html
-    end
-
-  end
-
-  def attendance_report
-    set_course
-    @course.password = nil
-    @course.save
-  end
-
   # GET /courses
   # GET /courses.json
   def index
@@ -98,6 +77,7 @@ class CoursesController < ApplicationController
   # GET /courses/1
   # GET /courses/1.json
   def show
+    @last_attendance = @course.attendances.where(open: false).last
   end
 
   # GET /courses/new
