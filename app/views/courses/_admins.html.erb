@@ -1,14 +1,14 @@
 <h4>
 <table>
-  <% course.admin_uids.sort.each do |s| %>
+  <% course.teachers.sort.each do |u| %>
 <tr>
-  <td><h4><%= s %></h4></td>
+  <td><h4><%= u.name.nil? ? u.uid : "#{u.name} (#{u.uid})" %></h4></td>
   <td>&emsp;</td>
-  <td><h4><%= button_to 'Remove', admin_remove_path(id: course.id, uid: s), data: { confirm: 'Are you sure?' }, remote: true, class: 'btn btn-default' unless s == current_user.uid %></h4></td>
+  <td><h4><%= button_to 'Remove', teacher_remove_path(id: course.id, uid: u), data: { confirm: 'Are you sure?' }, remote: true, class: 'btn btn-default' unless u == current_user %></h4></td>
 </tr>
 <% end %>
 </table>
-<%= form_tag(admin_add_path, :method => "post", id: "search-form", remote: true) do %>
+<%= form_tag(teacher_add_path, :method => "post", id: "search-form", remote: true) do %>
 <h4><%= text_field_tag :uid, params[:uid], placeholder: "Add a UNet ID", autofocus: focus %>
 &nbsp;
 <%= hidden_field_tag :id, course.id %>

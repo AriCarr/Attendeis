@@ -1,4 +1,4 @@
-<% if @courses %>
+<% if @enrolled_courses %>
 <h3> Enter your course's password to check in! </h3>
 <%= form_tag(checkin_path, :method => "post", id: "search-form") do %>
 <h4><%= text_field_tag :course_password, params[:course_password], placeholder: "Password", autofocus: true %>
@@ -7,11 +7,11 @@
 <%= submit_tag "Check in", class: 'btn btn-default'%></h4>
 <% end %>
 <% end %>
-<% if @courses_taught.count > 0 && @courses %> <hr> <% end %>
-<% if @courses_taught.count > 0 %>
+<% if @taught_courses.count > 0 && @courses %> <hr> <% end %>
+<% if @taught_courses.count > 0 %>
 <h3> Courses you teach:
     <br><br>
-    <% @courses_taught.each do |c| %>
+    <% @taught_courses.each do |c| %>
     <li><%= link_to c.name, c %></li><br>
     <%end%>
 </h3>

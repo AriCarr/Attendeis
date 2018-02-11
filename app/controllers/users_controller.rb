@@ -2,14 +2,19 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :checkin]
 
   def checkin
-    attendance = Attendance.where(password: user_params[:course_password]).first
+    attendance = Attendance.where(password: user_params[:course_password].downcase.strip).first
     # respond_to do |format|
       if attendance.nil?
         flash[:danger] = 'Incorrect password. Please try again!'
         redirect_to root_path
       else
-        attendance.users << current_user
-        flash[:success] = "Successfully checked in to #{attendance.course.name}!"
+        course_name = attendance.course.name
+        if attendance.students.include? current_user
+          flash[:warning] = "You've already checked in to #{course_name}!"
+        else
+          attendance.students << current_user
+          flash[:success] = "Successfully checked in to #{course_name}!"
+        end
         redirect_to root_path
       end
     # end

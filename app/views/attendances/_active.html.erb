@@ -5,7 +5,7 @@
     <h3><li> Enter the password: <b><%= @attendance.password %></b></li></h3>
 </ol>
 
-<h3> <%= @present.count %>/<%= @course.users.count %>
+<h3> <%= @present.count %>/<%= @course.students.count %>
 students checked in </h3>
 
 <%= button_to 'Click here to stop taking attendance', stop_attendance_path(id: @attendance.id), class: 'btn btn-primary'%>

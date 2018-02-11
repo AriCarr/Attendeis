@@ -18,8 +18,8 @@ Rails.application.routes.draw do
   post '/enroll', to: 'courses#enroll', as: 'enroll'
   post '/unenroll', to: 'courses#unenroll', as: 'unenroll'
 
-  post '/admin_add', to: 'courses#admin_add', as: 'admin_add'
-  post '/admin_remove', to: 'courses#admin_remove', as: 'admin_remove'
+  post '/teacher_add', to: 'courses#teacher_add', as: 'teacher_add'
+  post '/teacher_remove', to: 'courses#teacher_remove', as: 'teacher_remove'
 
   post '/dict_add', to: 'courses#dict_add', as: 'dict_add'
   post '/dict_remove', to: 'courses#dict_remove', as: 'dict_remove'

@@ -1,9 +1,9 @@
 class AttendancesController < ApplicationController
   before_action :set_attendance, only: [:show, :edit, :update, :destroy, :stop, :restart, :require_course_admin]
-  before_action :require_course_admin
+  before_action :require_course_admin, except: [:create]
 
   def require_course_admin
-    redirect_to root_path unless @course.admin_uids.include? current_user.uid
+    redirect_to root_path unless current_user.taught_courses.include? @course
   end
 
   # GET /attendances
@@ -15,8 +15,8 @@ class AttendancesController < ApplicationController
   # GET /attendances/1
   # GET /attendances/1.json
   def show
-    @present = @attendance.users
-    @absent = @course.users - @present
+    @present = @attendance.students
+    @absent = @course.students - @present
   end
 
   # GET /attendances/new
@@ -31,43 +31,47 @@ class AttendancesController < ApplicationController
   # POST /attendances
   # POST /attendances.json
   def create
-    @attendance = Attendance.new(attendance_params)
-    set_password
+    if current_user.taught_courses.include? params[:course_id]
+      redirect_to root_path
+    else
+      @attendance = Attendance.new(attendance_params)
+      set_password
 
-    respond_to do |format|
-      if @attendance.save
-        format.html { redirect_to @attendance }
-        format.json { render :show, status: :created, location: @attendance }
-      else
-        format.html { render :new }
-        format.json { render json: @attendance.errors, status: :unprocessable_entity }
+      respond_to do |format|
+        if @attendance.save
+          format.html { redirect_to @attendance }
+          format.json { render :show, status: :created, location: @attendance }
+        else
+          format.html { render :new }
+          format.json { render json: @attendance.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
 
   def set_password
     loop do
-      pass_arr = @attendance.course.dictionary.sample(3)
-      @attendance.password = "#{pass_arr[0]} #{pass_arr[1]} #{pass_arr[2]}"
+      pass_arr = @attendance.course.words.sample(3).pluck(:word)
+      @attendance.password = "#{pass_arr[0]} #{pass_arr[1]} #{pass_arr[2]}".strip
       @attendance.save
       break unless @attendance.password.nil?
     end
-    @course.attendance_count += 1
-    @course.save
+    course = @attendance.course
+    course.open_attendances += 1
+    course.save
   end
 
   def stop
     @attendance.open = false
     @attendance.save
-    @course.attendance_count -= 1
+    @course.open_attendances -= 1
     @course.save
     redirect_to @attendance
   end
 
   def restart
     @attendance.open = true
-    @course.attendance_count -= 1
-    @course.save
+    @attendance.save
     set_password
     redirect_to @attendance
   end

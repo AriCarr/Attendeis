@@ -1,16 +1,21 @@
 class CoursesController < ApplicationController
-  before_action :set_course, only: [:show, :edit, :update, :destroy]
+  before_action :set_course, only: [:show, :edit, :update, :destroy, :require_admin]
   before_action :require_admin
 
   def require_admin
+    redirect_to root_path unless is_admin current_user
+  end
+
+  def is_admin(user)
     set_course
-    redirect_to root_path unless @course.admin_uids.include? current_user.uid
+    @course.teachers.include? user
   end
 
   def enroll
     set_course
     uid = params[:student].downcase
-    @course.users << User.find_or_create_by(uid: uid) unless @course.admin_uids.include? uid
+    user = User.find_or_create_by(uid: uid)
+    user.enrolled_courses << @course unless is_admin(user)
 
     respond_to do |format|
       format.js
@@ -19,27 +24,26 @@ class CoursesController < ApplicationController
 
   def unenroll
     set_course
-    @course.users.delete(User.find(params[:student]))
+    @course.students.delete(User.find(params[:student]))
 
     respond_to do |format|
       format.js
     end
   end
 
-  def admin_add
+  def teacher_add
     set_course
-    word = params[:uid].downcase
-    @course.admin_uids << word unless @course.admin_uids.include? word
-    @course.save
+    user = User.find_or_create_by(uid: params[:uid].downcase)
+    user.taught_courses << @course
 
     respond_to do |format|
       format.js
     end
   end
 
-  def admin_remove
+  def teacher_remove
     set_course
-    @course.admin_uids.delete(params[:uid])
+    @course.teachers.delete(User.find(params[:uid].downcase))
     @course.save
 
     respond_to do |format|
@@ -49,8 +53,8 @@ class CoursesController < ApplicationController
 
   def dict_add
     set_course
-    word = params[:word].downcase
-    @course.dictionary << word unless @course.dictionary.include? word
+    word = params[:word].downcase.strip
+    @course.words << Word.create(word: word) unless @course.words.include? word
     @course.save
 
     respond_to do |format|
@@ -60,8 +64,10 @@ class CoursesController < ApplicationController
 
   def dict_remove
     set_course
-    @course.dictionary.delete(params[:word])
-    @course.save
+    # byebug
+    word = params[:word]
+    Word.find(params[:word]).destroy
+    params[:word] = nil
 
     respond_to do |format|
       format.js

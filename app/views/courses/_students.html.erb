@@ -1,6 +1,6 @@
 <h4>
 <table>
-  <% course.users.sort_by { |u| u.uid  }.each do |u| %>
+  <% course.students.sort_by { |u| u.uid  }.each do |u| %>
 <tr>
   <td><h4><%= u.name.nil? ? u.uid : "#{u.name} (#{u.uid})" %></h4></td>
   <td>&emsp;</td>

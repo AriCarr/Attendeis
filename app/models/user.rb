@@ -2,7 +2,9 @@ class User < ApplicationRecord
     self.primary_key = 'uid'
     devise :omniauthable, omniauth_providers: [:saml]
     has_many :expectations
-    has_many :courses, through: :expectations
+    has_many :enrolled_courses, through: :expectations
+    has_many :teachings
+    has_many :taught_courses, through: :teachings
     has_many :checkins
     has_many :attendances, through: :checkins
     alias_attribute :id, :uid
