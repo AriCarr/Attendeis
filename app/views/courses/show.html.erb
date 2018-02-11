@@ -2,36 +2,40 @@
 
 <div class="jumbotron">
     <h2><%= @course.name %></h2>
+    <br>
     <%= button_to 'Click here to start taking attendance!', create_attendance_path(course_id: @course.id), class: 'btn btn-primary'%>
     <hr>
-    <%= button_to 'Click here to view the last attendance report', @last_attendance, class: 'btn btn-default' unless @last_attendance.nil?%>
+    <% if @running %>
+    <h3> Currently-running attendance: </h3>
+        <h4>
+        <% @running.each do |a| %>
+        <br><%= link_to a.timestamp, a %><br>
+        <%end%>
+    </h4>
     <hr>
+    <% end %>
+    <% if @past %>
+    <h3> Past attendances: </h3>
+        <h4>
+        <% @past.each do |a| %>
+        <br><%= link_to a.timestamp, a %><br>
+        <%end%>
+    </h4>
+    <hr>
+    <% end %>
     <h3> Expected students: </h3>
     <div id = 'students'>
-    <%= render partial: 'students', locals: {course: @course} %>
+    <%= render partial: 'students', locals: {course: @course, focus: false} %>
     </div>
     <hr>
     <h3> Password dictionary: </h3>
     <div id = 'dictionary'>
-    <%= render partial: 'dictionary', locals: {course: @course} %>
+    <%= render partial: 'dictionary', locals: {course: @course, focus: false} %>
     </div>
     <hr>
     <h3> Course admins: </h3>
     <div id = 'admins'>
-    <%= render partial: 'admins', locals: {course: @course} %>
+    <%= render partial: 'admins', locals: {course: @course, focus: false} %>
     </div>
 
 </div>
-
-<p>
-  <strong>Name:</strong>
-  <%= @course.name %>
-</p>
-
-<p>
-  <strong>Admin uids:</strong>
-  <%= @course.admin_uids %>
-</p>
-
-<%= link_to 'Edit', edit_course_path(@course) %> |
-<%= link_to 'Back', courses_path %>

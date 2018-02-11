@@ -1,12 +1,7 @@
 <div class="jumbotron">
   <h2> <%= "Welcome#{current_user ? ", #{current_user.name}" : ''}!" %> </h2>
-  <h2><% if !current_user %>Authenticate via <strong><%= link_to 'Shib', '/users/auth/saml' %></strong> to get started!
-  <% else %> Click on one of your courses to get started!</h2>
-  <hr>
-  <h4><strong>
-      <% @courses.each do |c| %>
-      <li><%= link_to c.name, c %></li>
-      <%end%>
-  </strong></h4>
+  <h2><% if !current_user %><strong><%= link_to 'Log in', '/users/auth/saml' %></strong> with your Brandeis credentials to get started!</h2>
+  <% else %>
+  <%= render partial: 'user_dashboard' %>
   <%end%>
 </div>

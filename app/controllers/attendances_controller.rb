@@ -1,5 +1,10 @@
 class AttendancesController < ApplicationController
-  before_action :set_attendance, only: [:show, :edit, :update, :destroy, :stop]
+  before_action :set_attendance, only: [:show, :edit, :update, :destroy, :stop, :restart, :require_course_admin]
+  before_action :require_course_admin
+
+  def require_course_admin
+    redirect_to root_path unless @course.admin_uids.include? current_user.uid
+  end
 
   # GET /attendances
   # GET /attendances.json
@@ -10,6 +15,8 @@ class AttendancesController < ApplicationController
   # GET /attendances/1
   # GET /attendances/1.json
   def show
+    @present = @attendance.users
+    @absent = @course.users - @present
   end
 
   # GET /attendances/new
@@ -29,7 +36,7 @@ class AttendancesController < ApplicationController
 
     respond_to do |format|
       if @attendance.save
-        format.html { redirect_to @attendance, notice: 'Attendance was successfully created.' }
+        format.html { redirect_to @attendance }
         format.json { render :show, status: :created, location: @attendance }
       else
         format.html { render :new }
@@ -45,11 +52,24 @@ class AttendancesController < ApplicationController
       @attendance.save
       break unless @attendance.password.nil?
     end
+    @course.attendance_count += 1
+    @course.save
   end
 
   def stop
     @attendance.open = false
     @attendance.save
+    @course.attendance_count -= 1
+    @course.save
+    redirect_to @attendance
+  end
+
+  def restart
+    @attendance.open = true
+    @course.attendance_count -= 1
+    @course.save
+    set_password
+    redirect_to @attendance
   end
 
   # PATCH/PUT /attendances/1
@@ -80,6 +100,7 @@ class AttendancesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_attendance
       @attendance = Attendance.find(params[:id])
+      @course = @attendance.course
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

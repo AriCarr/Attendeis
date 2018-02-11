@@ -9,7 +9,7 @@
 <% end %>
 </table>
 <%= form_tag(dict_add_path, :method => "post", id: "search-form", remote: true) do %>
-<h4><%= text_field_tag :word, params[:word], placeholder: "Add a word", autofocus: true %>
+<h4><%= text_field_tag :word, params[:word], placeholder: "Add a word", autofocus: focus %>
 &nbsp;
 <%= hidden_field_tag :id, course.id %>
 <%= submit_tag "Add", class: 'btn btn-default'%></h4>

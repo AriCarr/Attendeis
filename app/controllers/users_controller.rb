@@ -1,5 +1,23 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :checkin]
+
+  def checkin
+    attendance = Attendance.where(password: user_params[:course_password]).first
+    # respond_to do |format|
+      if attendance.nil?
+        flash[:danger] = 'Incorrect password. Please try again!'
+        redirect_to root_path
+      else
+        attendance.users << current_user
+        flash[:success] = "Successfully checked in to #{attendance.course.name}!"
+        redirect_to root_path
+      end
+    # end
+    # if course.nil?
+    #   flash 'Incorrect password. Please try again!'
+    #   redirect_to root_path
+    # end
+  end
 
   # GET /users
   # GET /users.json
@@ -69,6 +87,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:uid, :name)
+      params.permit(:uid, :name, :course_password)
     end
 end

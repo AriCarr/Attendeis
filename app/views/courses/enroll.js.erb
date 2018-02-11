@@ -1,1 +1,1 @@
-$("#students").html("<%=escape_javascript(render(:partial => 'students', locals: {course: @course}))%>")
+$("#students").html("<%=escape_javascript(render(:partial => 'students', locals: {course: @course, focus: true}))%>")

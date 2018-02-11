@@ -9,7 +9,7 @@
 <% end %>
 </table>
 <%= form_tag(admin_add_path, :method => "post", id: "search-form", remote: true) do %>
-<h4><%= text_field_tag :uid, params[:uid], placeholder: "Add a UNet ID", autofocus: true %>
+<h4><%= text_field_tag :uid, params[:uid], placeholder: "Add a UNet ID", autofocus: focus %>
 &nbsp;
 <%= hidden_field_tag :id, course.id %>
 <%= submit_tag "Add", class: 'btn btn-default'%></h4>
