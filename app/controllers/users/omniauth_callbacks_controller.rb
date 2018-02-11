@@ -1,5 +1,7 @@
 # This controller handles the callback after authenticating with Shibboleth
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
+  skip_before_action :require_login
+
   def saml
     @user = User.from_omniauth(request.env['omniauth.auth'])
 
