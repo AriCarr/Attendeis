@@ -1,5 +1,5 @@
 class AuthenticationsController < Devise::OmniauthCallbacksController
-  skip_before_action :verify_authenticity_token
+  skip_before_action :verify_authenticity_token, :require_login
 
   # This method is called to enable users to log in with Shibboleth
   def saml
