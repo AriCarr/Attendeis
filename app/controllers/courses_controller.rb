@@ -84,8 +84,9 @@ class CoursesController < ApplicationController
   # GET /courses/1.json
   def show
     running = @course.attendances.where(open: true).reverse
-    @past = (@course.attendances - running).reverse
+    past = (@course.attendances - running).reverse
     @running = running unless running.count == 0
+    @past = past unless past.count == 0
   end
 
   # GET /courses/new
