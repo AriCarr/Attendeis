@@ -9,7 +9,11 @@ Rails.application.routes.draw do
   post '/restart_attendance', to: 'attendances#restart'
   post '/stop_attendance', to: 'attendances#stop'
 
-  resources :courses
+  resources :courses do
+    collection do
+      post :download_csv
+    end
+  end
   # resources :users
   devise_for :users, controllers: { omniauth_callbacks: 'authentications' }
 

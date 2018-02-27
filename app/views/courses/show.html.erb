@@ -2,7 +2,8 @@
 
 <div class="jumbotron">
     <h2><%= @course.name %></h2>
-    <br>
+    <hr>
+    <h3> Start attendance: </h3>
     <%= button_to 'Click here to start taking attendance!', create_attendance_path(course_id: @course.id), class: 'btn btn-primary'%>
     <hr>
     <% if @running %>
@@ -14,6 +15,9 @@
     </h4>
     <hr>
     <% end %>
+    <h3> CSV download: </h3>
+    <%= button_to "Download attendance records as CSV", download_csv_courses_path(id: @course.id, format: :csv), class: "btn btn-primary" %>
+    <hr>
     <% if @past %>
     <h3> Past attendances: </h3>
         <h4>

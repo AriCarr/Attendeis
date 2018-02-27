@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_action :set_course, only: [:show, :edit, :update, :destroy, :require_admin]
+  before_action :set_course, only: [:show, :edit, :update, :destroy, :require_admin, :download_csv]
   before_action :require_admin
 
   def require_admin
@@ -9,6 +9,33 @@ class CoursesController < ApplicationController
   def is_admin(user)
     set_course
     @course.teachers.include? user
+  end
+
+  def download_csv
+    attendances = @course.attendances
+    students = @course.students.sort
+    student_attendances = Hash.new
+    students.each { |s| student_attendances[s] = Checkin.where(user_id: s.id).pluck(:attendance_id) }
+    @headers = ['Student UID', 'Student name']
+    @headers << attendances.map { |a| a.timestamp  }
+    @headers << ['Classes present', 'Classes absent', 'Attendance percentage']
+    @headers.flatten!
+    @student_lines = []
+    students.each do |s|
+      cur_att = student_attendances[s]
+      present_total = cur_att.count
+      absent_total = attendances.count - present_total
+      line = [s.uid, s.name]
+      line << attendances.map { |a| cur_att.include?(a.id) ? 'Present' : 'ABSENT' }
+      line << [present_total, absent_total, (present_total.to_f/attendances.count).round(2)]
+      @student_lines << line.flatten
+    end
+    respond_to do |format|
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"#{@course.name}_#{DateTime.now.strftime("%Y-%m-%d_%H-%M-%S")}.csv\""
+        headers['Content-Type'] ||= 'text/csv'
+      end
+    end
   end
 
   def enroll

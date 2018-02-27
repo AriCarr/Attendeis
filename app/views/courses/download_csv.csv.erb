@@ -1,0 +1,4 @@
+<%= CSV.generate_line(@headers).html_safe %>
+<%- @student_lines.each do |line| -%>
+<%= CSV.generate_line(line).html_safe -%>
+<%- end -%>
