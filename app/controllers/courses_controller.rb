@@ -12,29 +12,38 @@ class CoursesController < ApplicationController
   end
 
   def download_csv
-    attendances = @course.attendances
-    students = @course.students.sort
-    student_attendances = Hash.new
-    students.each { |s| student_attendances[s] = Checkin.where(user_id: s.id).pluck(:attendance_id) }
-    @headers = ['Student UID', 'Student name']
-    @headers << attendances.map { |a| a.timestamp  }
-    @headers << ['Classes present', 'Classes absent', 'Attendance percentage']
-    @headers.flatten!
-    @student_lines = []
-    students.each do |s|
-      cur_att = student_attendances[s]
-      present_total = cur_att.count
-      absent_total = attendances.count - present_total
-      line = [s.uid, s.name]
-      line << attendances.map { |a| cur_att.include?(a.id) ? 'Present' : 'ABSENT' }
-      line << [present_total, absent_total, (present_total.to_f/attendances.count).round(2)]
-      @student_lines << line.flatten
-    end
+    @attendances = @course.attendances
+    @students = @course.students.sort
+    @student_attendances = Hash.new
+    @students.each { |s| @student_attendances[s] = Checkin.where(user_id: s.id).pluck(:attendance_id) }
+    set_headers
+    set_student_lines
+    timestamp = @attendances.last.timestamp.tr('/:', '-').delete ','
     respond_to do |format|
       format.csv do
-        headers['Content-Disposition'] = "attachment; filename=\"#{@course.name}_#{DateTime.now.strftime("%Y-%m-%d_%H-%M-%S")}.csv\""
+        headers['Content-Disposition'] = "attachment; filename=\"#{@course.name} #{timestamp}.csv\""
         headers['Content-Type'] ||= 'text/csv'
       end
+    end
+  end
+
+  def set_headers
+    @headers = ['Student UID', 'Student name']
+    @headers << @attendances.map(&:timestamp)
+    @headers << ['Classes present', 'Classes absent', 'Attendance percentage']
+    @headers.flatten!
+  end
+
+  def set_student_lines
+    @student_lines = []
+    @students.each do |s|
+      cur_att = @student_attendances[s]
+      present_total = cur_att.count
+      absent_total = @attendances.count - present_total
+      line = [s.uid, s.name]
+      line << @attendances.map { |a| cur_att.include?(a.id) ? 'Present' : 'ABSENT' }
+      line << [present_total, absent_total, (present_total.to_f/@attendances.count).round(2)]
+      @student_lines << line.flatten
     end
   end
 
