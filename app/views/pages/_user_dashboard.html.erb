@@ -1,3 +1,4 @@
+<h2> Welcome, <%= current_user.name %>! </h2>
 <% if @enrolled_courses %>
 <h3> Enter your course's password to check in! </h3>
 <%= form_tag(checkin_path, :method => "post", id: "search-form") do %>
@@ -7,6 +8,7 @@
 <%= submit_tag "Check in", class: 'btn btn-default'%></h4>
 <% end %>
 <% end %>
+<br>
 <% if @taught_courses.count > 0 && @enrolled_courses %> <hr> <% end %>
 <% if @taught_courses.count > 0 %>
 <h3> Courses you teach:
@@ -16,3 +18,5 @@
     <%end%>
 </h3>
 <% end %>
+<hr>
+Want me to display a different name? Go to <strong><%= link_to 'SAGE', ENV['SAGE_URL'] %></strong> and change your preferred name, and it should be changed here in a few days!

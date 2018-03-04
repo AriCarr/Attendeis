@@ -1,6 +1,5 @@
 <div class="jumbotron">
-  <h2> <%= "Welcome#{current_user ? ", #{current_user.name}" : ''}!" %> </h2>
-  <h2><% if !current_user %><strong><%= link_to 'Log in', '/users/auth/saml' %></strong> with your Brandeis credentials to get started!</h2>
+  <h2><% if !current_user %><h2>Welcome!</h2><h2><strong><%= link_to 'Log in', '/users/auth/saml' %></strong> with your Brandeis credentials to get started!</h2>
   <% else %>
   <%= render partial: 'user_dashboard' %>
   <%end%>
