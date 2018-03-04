@@ -15,7 +15,7 @@ students checked in </h2>
 
 <h3> Not checked in: </h3>
     <ul><h4>
-    <% @absent.sort_by(&:name).each do |u| %>
+    <% absent_without_nil.sort_by(&:name).each do |u| %>
     <li><%= u.name.nil? ? u.uid : "#{u.name} (#{u.uid})" %></li><br>
     <%end%>
 </h4></ul>
