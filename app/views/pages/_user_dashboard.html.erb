@@ -18,5 +18,7 @@
     <%end%>
 </h3>
 <% end %>
+<% if current_user.preferred %>
 <hr>
 Want me to display a different name? Go to <strong><%= link_to 'SAGE', ENV['SAGE_URL'] %></strong> and change your preferred name, and it should be changed here in a few days!
+<% end %>

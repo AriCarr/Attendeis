@@ -1,36 +1,38 @@
 class User < ApplicationRecord
-    self.primary_key = 'uid'
-    devise :omniauthable, omniauth_providers: [:saml]
-    has_many :expectations
-    has_many :enrolled_courses, through: :expectations
-    has_many :teachings
-    has_many :taught_courses, through: :teachings
-    has_many :checkins
-    has_many :attendances, through: :checkins
-    alias_attribute :id, :uid
+  self.primary_key = 'uid'
+  devise :omniauthable, omniauth_providers: [:saml]
+  has_many :expectations
+  has_many :enrolled_courses, through: :expectations
+  has_many :teachings
+  has_many :taught_courses, through: :teachings
+  has_many :checkins
+  has_many :attendances, through: :checkins
+  alias_attribute :id, :uid
 
-
-    class << self
-        def from_saml(auth_hash)
-            @data = auth_hash['extra']['raw_info'].attributes
-            puts @data
-            uid = parse('urn:oid:0.9.2342.19200300.100.1.1').downcase
-            user = find_or_create_by(uid: uid)
-            user.name = getname
-            user.save
-            user
-        end
-
-        def getname
-          parse('urn:oid:2.16.840.1.113730.3.1.241')
-        rescue
-          first_name = parse('urn:oid:2.5.4.42')
-          last_name = parse('urn:oid:2.5.4.4')
-          "#{first_name} #{last_name}"
-        end
-
-        def parse key
-            @data[key][0]
-        end
+  class << self
+    def from_saml(auth_hash)
+      @data = auth_hash['extra']['raw_info'].attributes
+      puts @data
+      uid = parse('urn:oid:0.9.2342.19200300.100.1.1').downcase
+      user = find_or_create_by(uid: uid)
+      user.name = getname
+      user.preferred = @preferred
+      user.save
+      user
     end
+
+    def getname
+      @preferred = true
+      parse('urn:oid:2.16.840.1.113730.3.1.241')
+    rescue
+      @preferred = false
+      first_name = parse('urn:oid:2.5.4.42')
+      last_name = parse('urn:oid:2.5.4.4')
+      "#{first_name} #{last_name}"
+    end
+
+    def parse(key)
+      @data[key][0]
+    end
+  end
 end
