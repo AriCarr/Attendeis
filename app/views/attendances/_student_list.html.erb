@@ -1,6 +1,6 @@
 <h3> Checked in: </h3>
     <ul>
-    <% @present.sort_by(&:name).each do |u| %>
+    <% without_nil(@present).sort_by { |u| [u.name, u.uid] }.each do |u| %>
     <h4><li><%= u.name.nil? ? u.uid : "#{u.name} (#{u.uid})" %></li></h4>
     <h6><%= link_to 'Mark as absent', change_path(id: @attendance.id, uid: u.uid, present: false), data: { confirm: "Mark #{u.name.nil? ? u.uid : u.name} as absent?" }, remote: true, method: 'post' %></h6>
     <%end%>
@@ -8,7 +8,7 @@
 
 <h3> Not checked in: </h3>
     <ul>
-    <% absent_without_nil.sort_by { |u| [u.name, u.uid] }.each do |u| %>
+    <% without_nil(@absent).sort_by { |u| [u.name, u.uid] }.each do |u| %>
     <h4><li><%= u.name.empty? ? u.uid : "#{u.name} (#{u.uid})" %></li></h4>
     <h6><%= link_to 'Mark as present', change_path(id: @attendance.id, uid: u.uid, present: true), data: { confirm: "Mark #{u.name.empty? ? u.uid : u.name} as present?" }, remote: true, method: 'post' %></h6>
     <%end%>
