@@ -25,7 +25,7 @@ class AttendancesController < ApplicationController
 
   def change
     user = User.find(params[:uid])
-    if params[:present] == 'true'
+    if params[:present] == 'present'
       @attendance.students << user
     else
       @attendance.students.delete(user)

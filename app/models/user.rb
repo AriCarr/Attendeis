@@ -9,6 +9,10 @@ class User < ApplicationRecord
   has_many :attendances, through: :checkins
   alias_attribute :id, :uid
 
+  def display_name
+    name.empty? ? uid : "#{name} (#{uid})"
+  end
+
   class << self
     def from_saml(auth_hash)
       @data = auth_hash['extra']['raw_info'].attributes

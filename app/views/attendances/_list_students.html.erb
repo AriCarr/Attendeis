@@ -1,0 +1,7 @@
+<h3> <%= header %> </h3>
+    <ul>
+    <% without_nil(list).sort_by { |u| [u.name, u.uid] }.each do |u| %>
+    <h4><li><%= u.display_name %></li></h4>
+    <h6><%= link_to "Mark as #{override_state}", change_path(id: @attendance.id, uid: u.uid, present: override_state), data: { confirm: "Mark #{u.display_name} as #{override_state}?" }, remote: true, method: 'post' %></h6>
+    <%end%>
+</ul>
