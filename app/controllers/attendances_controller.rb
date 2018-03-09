@@ -1,5 +1,5 @@
 class AttendancesController < ApplicationController
-  before_action :set_attendance, only: [:show, :edit, :update, :destroy, :stop, :restart, :require_course_admin]
+  before_action :set_attendance, only: [:show, :edit, :update, :destroy, :stop, :restart, :require_course_admin, :change]
   before_action :require_course_admin, except: [:create]
 
   def require_course_admin
@@ -15,8 +15,27 @@ class AttendancesController < ApplicationController
   # GET /attendances/1
   # GET /attendances/1.json
   def show
+    get_present
+  end
+
+  def get_present
     @present = @attendance.students
     @absent = @course.students - @present
+  end
+
+  def change
+    user = User.find(params[:uid])
+    if params[:present] == 'true'
+      @attendance.students << user
+    else
+      @attendance.students.delete(user)
+    end
+
+    get_present
+
+    respond_to do |format|
+      format.js
+    end
   end
 
   # GET /attendances/new
@@ -109,6 +128,6 @@ class AttendancesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def attendance_params
-      params.permit(:id, :password, :open, :course_id)
+      params.permit(:id, :password, :open, :course_id, :uid, :present)
     end
 end

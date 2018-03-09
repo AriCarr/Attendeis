@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   # resources :users
   devise_for :users, controllers: { omniauth_callbacks: 'authentications' }
 
+  post '/change', to: 'attendances#change', as: 'change'
+
   post '/change_state', to: 'courses#change_state', as: 'change_state'
 
   post '/enroll', to: 'courses#enroll', as: 'enroll'

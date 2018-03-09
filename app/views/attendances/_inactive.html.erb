@@ -1,21 +1,12 @@
 <h2> <%= "#{@course.name}, #{@attendance.timestamp}" %> </h2>
 
-<h2> <%= @present.count %>/<%= @course.students.count %>
-students checked in </h2>
+<div id = 'student_count'>
+<%= render partial: 'student_count' %>
+</div>
 <br>
 <h4> <%= link_to 'Click here to return to the course', @course %>  </h4>
 <%= button_to 'Click here to reopen this attendance', restart_attendance_path(id: @attendance.id), class: 'btn btn-primary'%>
 
-<h3> Checked in: </h3>
-    <ul><h4>
-    <% @present.sort_by(&:name).each do |u| %>
-    <li><%= u.name.nil? ? u.uid : "#{u.name} (#{u.uid})" %></li><br>
-    <%end%>
-</h4></ul>
-
-<h3> Not checked in: </h3>
-    <ul><h4>
-    <% absent_without_nil.sort_by { |u| [u.name, u.uid] }.each do |u| %>
-    <li><%= u.name.empty? ? u.uid : "#{u.name} (#{u.uid})" %></li><br>
-    <%end%>
-</h4></ul>
+<div id = 'students'>
+<%= render partial: 'student_list' %>
+</div>
