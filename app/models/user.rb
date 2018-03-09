@@ -23,10 +23,10 @@ class User < ApplicationRecord
 
         def getname
           parse('urn:oid:2.16.840.1.113730.3.1.241')
-        rescue
-          first_name = parse('urn:oid:2.5.4.42')
-          last_name = parse('urn:oid:2.5.4.4')
-          "#{first_name} #{last_name}"
+        # rescue
+        #   first_name = parse('urn:oid:2.5.4.42')
+        #   last_name = parse('urn:oid:2.5.4.4')
+        #   "#{first_name} #{last_name}"
         end
 
         def parse key
