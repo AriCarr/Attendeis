@@ -4,8 +4,15 @@
 <%= render partial: 'student_count' %>
 </div>
 <br>
-<h4> <%= link_to 'Click here to return to the course', @course %>  </h4>
-<%= button_to 'Click here to reopen this attendance', restart_attendance_path(id: @attendance.id), class: 'btn btn-primary'%>
+<table>
+    <tr>
+        <td><%= link_to 'BACK to the course', @course, class: 'btn btn-primary' %></td>
+        <td>&nbsp;</td>
+        <td><%= button_to 'REOPEN this attendance', restart_attendance_path(id: @attendance.id), class: 'btn btn-success'%></td>
+        <td>&nbsp;</td>
+        <td><%= button_to 'DELETE this attendance', delete_attendance_path(id: @attendance.id), data: { confirm: "Are you sure you want to delete this attendance?\nThis can't be undone!" }, class: 'btn btn-danger' %></td>
+    </tr>
+</table>
 
 <div id = 'students'>
 <%= render partial: 'student_list' %>

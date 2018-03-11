@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   post '/restart_attendance', to: 'attendances#restart'
   post '/stop_attendance', to: 'attendances#stop'
 
+  post '/delete_attendance', to: 'attendances#delete'
+
   resources :courses do
     collection do
       post :download_csv

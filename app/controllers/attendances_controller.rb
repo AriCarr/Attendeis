@@ -1,6 +1,6 @@
 class AttendancesController < ApplicationController
-  before_action :set_attendance, only: [:show, :edit, :update, :destroy, :stop, :restart, :require_course_admin, :change]
-  before_action :require_course_admin, except: [:create]
+  before_action :set_attendance, only: [:show, :edit, :update, :destroy, :delete, :stop, :restart, :require_course_admin, :change]
+  before_action :require_course_admin, except: :create
 
   def require_course_admin
     redirect_to root_path unless current_user.taught_courses.include? @course
@@ -10,6 +10,14 @@ class AttendancesController < ApplicationController
   # GET /attendances.json
   def index
     @attendances = Attendance.all
+  end
+
+  def delete
+    @attendance.checkins.destroy_all
+    @attendance.destroy
+    respond_to do |format|
+      format.html { redirect_to @course }
+    end
   end
 
   # GET /attendances/1
@@ -50,7 +58,7 @@ class AttendancesController < ApplicationController
   # POST /attendances
   # POST /attendances.json
   def create
-    if current_user.taught_courses.include? params[:course_id]
+    if !current_user.taught_courses.include? Course.find(params[:course_id])
       redirect_to root_path
     else
       @attendance = Attendance.new(attendance_params)
