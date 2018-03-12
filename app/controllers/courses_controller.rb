@@ -14,7 +14,7 @@ class CoursesController < ApplicationController
   def download_csv
     @attendances = @course.attendances
     @students = @course.students.sort
-    @student_attendances = Hash.new
+    @student_attendances = {}
     @students.each { |s| @student_attendances[s] = Checkin.where(user_id: s.id).pluck(:attendance_id) }
     set_headers
     set_student_lines
@@ -100,8 +100,6 @@ class CoursesController < ApplicationController
 
   def dict_remove
     set_course
-    # byebug
-    word = params[:word]
     Word.find(params[:word]).destroy
     params[:word] = nil
 

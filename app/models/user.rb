@@ -27,11 +27,14 @@ class User < ApplicationRecord
 
     def getname
       @preferred = true
-      parse('urn:oid:2.16.840.1.113730.3.1.241')
+      first_name = parse('urn:mace:dir:attribute-def:displayGivenName')
+      last_name = parse('urn:mace:dir:attribute-def:displaySN')
+      "#{first_name} #{last_name}"
     rescue
       @preferred = false
       first_name = parse('urn:oid:2.5.4.42')
       last_name = parse('urn:oid:2.5.4.4')
+    ensure
       "#{first_name} #{last_name}"
     end
 
