@@ -26,17 +26,15 @@ class User < ApplicationRecord
     end
 
     def getname
-      begin
-        @preferred = true
-        first_name = parse('urn:mace:dir:attribute-def:displayGivenName')
-        last_name = parse('urn:mace:dir:attribute-def:displaySN')
+      @preferred = true
+      first_name = parse('urn:mace:dir:attribute-def:displayGivenName')
+      last_name = parse('urn:mace:dir:attribute-def:displaySN')
+      "#{first_name} #{last_name}"
       rescue
         @preferred = false
         first_name = parse('urn:oid:2.5.4.42')
         last_name = parse('urn:oid:2.5.4.4')
-      ensure
         "#{first_name} #{last_name}"
-      end
     end
 
     def parse(key)
