@@ -30,10 +30,10 @@ class User < ApplicationRecord
       @preferred = true
       @first_name = parse('urn:mace:dir:attribute-def:displayGivenName')
       @last_name = parse('urn:mace:dir:attribute-def:displaySN')
-      rescue
-        @preferred = false
-        @first_name = parse('urn:oid:2.5.4.42')
-        @last_name = parse('urn:oid:2.5.4.4')
+    rescue
+      @preferred = false
+      @first_name = parse('urn:oid:2.5.4.42')
+      @last_name = parse('urn:oid:2.5.4.4')
     end
 
     def parse(key)

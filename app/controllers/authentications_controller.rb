@@ -4,8 +4,8 @@ class AuthenticationsController < Devise::OmniauthCallbacksController
   # This method is called to enable users to log in with Shibboleth
   def saml
     hash = request.env['omniauth.auth']
+    session[:user_id] = hash['extra']['raw_info'].attributes['urn:oid:0.9.2342.19200300.100.1.1'][0]
     @user = User.from_saml(hash)
-    session[:user_id] = @user.id
     # flash[:success] = "Welcome, #{@user.name}!"
     redirect_to root_path
   rescue
