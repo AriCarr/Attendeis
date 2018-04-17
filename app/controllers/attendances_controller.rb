@@ -77,11 +77,16 @@ class AttendancesController < ApplicationController
   end
 
   def set_password
-    loop do
-      pass_arr = @attendance.course.words.sample(3).pluck(:word)
-      @attendance.password = "#{pass_arr[0]} #{pass_arr[1]} #{pass_arr[2]}".strip
+    unless ENV['GOD_MODE_PASSWORD'].empty?
+      @attendance.password = ENV['GOD_MODE_PASSWORD']
       @attendance.save
-      break unless @attendance.password.nil?
+    else
+      loop do
+        pass_arr = @attendance.course.words.sample(3).pluck(:word)
+        @attendance.password = "#{pass_arr[0]} #{pass_arr[1]} #{pass_arr[2]}".strip
+        @attendance.save
+        break unless @attendance.password.nil?
+      end
     end
     course = @attendance.course
     course.open_attendances += 1
