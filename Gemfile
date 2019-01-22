@@ -9,6 +9,9 @@ gem 'rails_admin', '~> 1.3.0'
 gem 'omniauth-saml'
 gem 'devise'
 gem 'bootstrap-sass'
+gem "nokogiri", ">= 1.8.5"
+gem "rack", ">= 2.0.6"
+gem "loofah", ">= 2.2.3"
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.6'
 # Use postgresql as the database for Active Record
