@@ -7,7 +7,7 @@ end
 
 ruby '2.5.3'
 
-gem 'rails_admin', '~> 1.3.0'
+gem 'rails_admin', '~> 1.4.3'
 gem 'omniauth-saml'
 gem 'devise'
 gem 'bootstrap-sass'
